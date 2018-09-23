@@ -19,11 +19,11 @@ class Tradutor {
 	** @param IP e porta para uso de proxy. Ex: 127.0.0.1:8080
 	*/
 	
-public function __construct ($de = null, $para = null, $proxy=null){
+public function __construct ($de = 'auto', $para = 'pt', $proxy=null){
 
 		$this->proxy=$proxy;
 	
-		$this->de=($de == null) ? 'auto' : $de;
+		$this->de=$de;
 
 		$this->para=$para;
 	
