@@ -8,6 +8,10 @@
 **/
 
 class Tradutor {
+	
+	private $this->de;
+	private $this->para;
+	private $proxy;
 
 	/*
 	** @param (str) $de Idioma do texto,deixe como null para detecção automática do idioma.
@@ -16,23 +20,25 @@ class Tradutor {
 	*/
 	
 public function __construct ($de = null, $para = null, $proxy=null){
-	
-	if ($proxy != null){
+
 		$this->proxy=$proxy;
-		}else {
-			$this->proxy=null;
-			}
 	
-	if ($de == null){
-		$this->de='auto';
-		}else {
-			$this->de=$de;
-		}
-		
-	if ($para != null){
-	$this->para=$para;
+		$this->de=($de == null) ? 'auto' : $de;
+
+		$this->para=$para;
+	
 	}
 	
+public function de (){
+	return $this->de;
+	}
+	
+public function para (){
+	return $this->para;
+	}
+	
+public function proxy (){
+	return $this->proxy;
 	}
 	
 	/*
@@ -45,13 +51,13 @@ public function __construct ($de = null, $para = null, $proxy=null){
 	
 public function traduzir ($text){
 	
-	if (!isset ($this->para)){
+	if (!isset ($this->para ())){
 		return 'Defina o idioma para ser traduzido!';
-		}elseif (strlen ($text) == 5000){
-			return 'Limite de caracteres excedido: 500 carac.';
+		}elseif (strlen ($text) >= 5000){
+			return 'Limite de caracteres excedido: 500 caract.';
 			}
 	
-	$traduzir=$this->Request ($text, $this->de, $this->para, $this->proxy);
+	$traduzir=$this->Request ($text, $this->de (), $this->para (), $this->proxy ());
 	
 	if (isset ($traduzir->erro)){
 		return $traduzir->erro;
@@ -77,13 +83,13 @@ public function traduzir ($text){
 	
 public function traduzLang ($de=null, $para, $text){
 	
-	if (strlen ($text) == 5000){
-		return 'Limite de caracteres excedido: 500 carac.';
+	if (strlen ($text) >= 5000){
+		return 'Limite de caracteres excedido: 500 caract.';
 		}
 		
 	$de=($de == null) ? 'auto' : $de;
 	
-	$traduz=$this->Request ($text, $de, $para, $this->proxy);
+	$traduz=$this->Request ($text, $de, $para, $this->proxy ());
 	$traducao=$traduz->sentences;
 	
 	foreach ($traducao as $str){
@@ -105,11 +111,11 @@ public function traduzLang ($de=null, $para, $text){
 	
 public function detectaIdioma ($text, $id_language=false){
 	
-	if (strlen ($text) == 5000){
-		return 'Limite de caracteres excedido: 500 carac.';
+	if (strlen ($text) >= 5000){
+		return 'Limite de caracteres excedido: 500 caract.';
 		}
 		
-	$detect=$this->Request ($text, 'auto', 'pt', $this->proxy);
+	$detect=$this->Request ($text, 'auto', 'pt', $this->proxy ());
 	
 	if (isset ($detect->erro)){
 		return $traduzir->erro;
